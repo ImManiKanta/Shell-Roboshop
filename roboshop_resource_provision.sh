@@ -1,5 +1,10 @@
 #Resource provision for roboshop proj using shell
 
+if [ $# -eq 0 ]; then
+echo "Usage: $0 <instance-name-1> <instance-name-2> ..." 
+exit 1
+fi
+
 SG_ID="sg-07d17be865ead02f3" # replace with your ID
 AMI_ID="ami-0220d79f3f480ecf5"
 ZONE_ID="Z00114331R4EBNTWP3VT8"
