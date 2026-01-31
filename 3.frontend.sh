@@ -61,10 +61,10 @@ VALIDATE $? "nginx.conf copied in /etc/nginx/"
 sed -i 's|location /api/catalogue/ { proxy_pass http://localhost:8080/; }|location /api/catalogue/ { proxy_pass http://catalogue.manidevops.online:8080/; }|g' /etc/nginx/nginx.conf
 VALIDATE $? "catalogue dns updated in /etc/nginx/nginx.conf"
 
-sed -i 's|location /api/cart/ { proxy_pass http://localhost:8080/; }|location /api/catalogue/ { proxy_pass http://cart.manidevops.online:8080/; }|g' /etc/nginx/nginx.conf
+sed -i 's|location /api/cart/ { proxy_pass http://localhost:8080/; }|location /api/cart/ { proxy_pass http://cart.manidevops.online:8080/; }|g' /etc/nginx/nginx.conf
 VALIDATE $? "cart dns updated in /etc/nginx/nginx.conf"
 
-sed -i 's|location /api/user/ { proxy_pass http://localhost:8080/; }|location /api/catalogue/ { proxy_pass http://user.manidevops.online:8080/; }|g' /etc/nginx/nginx.conf
+sed -i 's|location /api/user/ { proxy_pass http://localhost:8080/; }|location /api/user/ { proxy_pass http://user.manidevops.online:8080/; }|g' /etc/nginx/nginx.conf
 VALIDATE $? "user dns updated in /etc/nginx/nginx.conf"
 
 systemctl restart nginx &>>$LOGS_FILE
