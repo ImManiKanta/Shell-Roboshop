@@ -67,5 +67,11 @@ VALIDATE $? "cart dns updated in /etc/nginx/nginx.conf"
 sed -i 's|location /api/user/ { proxy_pass http://localhost:8080/; }|location /api/user/ { proxy_pass http://user.manidevops.online:8080/; }|g' /etc/nginx/nginx.conf
 VALIDATE $? "user dns updated in /etc/nginx/nginx.conf"
 
+sed -i 's|location /api/shipping/ { proxy_pass http://localhost:8080/; }|location /api/shipping/ { proxy_pass http://shipping.manidevops.online:8080/; }|g' /etc/nginx/nginx.conf
+VALIDATE $? "shipping dns updated in /etc/nginx/nginx.conf"
+
+sed -i 's|location /api/payment/ { proxy_pass http://localhost:8080/; }|location /api/payment/ { proxy_pass http://payment.manidevops.online:8080/; }|g' /etc/nginx/nginx.conf
+VALIDATE $? "payment dns updated in /etc/nginx/nginx.conf"
+
 systemctl restart nginx &>>$LOGS_FILE
 VALIDATE $? "Restarted nginx"
