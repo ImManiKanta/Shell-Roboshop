@@ -25,41 +25,41 @@ VALIDATE(){
     fi
 }
 
-dnf module disable nginx -y
+dnf module disable nginx -y &>>$LOGS_FILE
 VALIDATE $? "Disabling nginx Default version"
 
-dnf module enable nginx:1.24 -y
+dnf module enable nginx:1.24 -y &>>$LOGS_FILE
 VALIDATE $? "Enabling nginx:1.24"
 
-dnf install nginx -y
+dnf install nginx -y &>>$LOGS_FILE
 VALIDATE $? "Installing nginx:1.24"
 
-systemctl enable nginx 
+systemctl enable nginx &>>$LOGS_FILE
 VALIDATE $? "nginx service enabled"
 
-systemctl start nginx 
+systemctl start nginx &>>$LOGS_FILE
 VALIDATE $? "nginx service started"
 
 rm -rf /usr/share/nginx/html/* 
 VALIDATE $? "default nginx content removed"
 
-curl -o /tmp/frontend.zip https://roboshop-artifacts.s3.amazonaws.com/frontend-v3.zip
+curl -o /tmp/frontend.zip https://roboshop-artifacts.s3.amazonaws.com/frontend-v3.zip &>>$LOGS_FILE
 VALIDATE $? "frontend content downloaded"
 
-cd /usr/share/nginx/html 
+cd /usr/share/nginx/html &>>$LOGS_FILE
 VALIDATE $? "changed directory to html"
 
-unzip /tmp/frontend.zip
+unzip /tmp/frontend.zip &>>$LOGS_FILE
 VALIDATE $? "unzip content in /usr/share/nginx/html "
 
-mv /etc/nginx/nginx.conf /etc/nginx/backup_nginx.conf
+mv /etc/nginx/nginx.conf /etc/nginx/backup_nginx.conf &>>$LOGS_FILE
 VALIDATE $? "took backup of nginx.conf "
 
-cp $SCRIPT_DIR/nginx.conf /etc/nginx/
+cp $SCRIPT_DIR/nginx.conf /etc/nginx/ &>>$LOGS_FILE
 VALIDATE $? "nginx.conf copied in /etc/nginx/"
 
 sed -i 's|location /api/catalogue/ { proxy_pass http://localhost:8080/; }|location /api/catalogue/ { proxy_pass http://catalogue.manidevops.online:8080/; }|g' /etc/nginx/nginx.conf
 VALIDATE $? "catalogue dns updated in /etc/nginx/nginx.conf"
 
-systemctl restart nginx 
+systemctl restart nginx &>>$LOGS_FILE
 VALIDATE $? "Restarted nginx"
