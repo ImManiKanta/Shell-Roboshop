@@ -58,7 +58,7 @@ VALIDATE $? "took backup of nginx.conf "
 cp $SCRIPT_DIR/nginx.conf /etc/nginx/
 VALIDATE $? "nginx.conf copied in /etc/nginx/"
 
-sed -i 's/location /api/catalogue/ { proxy_pass http://localhost:8080/; }/location /api/catalogue/ { proxy_pass http://catalogue.manidevops.online:8080/; }/g' /etc/nginx//nginx.conf
+sed -i 's|location /api/catalogue/ { proxy_pass http://localhost:8080/; }|location /api/catalogue/ { proxy_pass http://catalogue.manidevops.online:8080/; }|g' /etc/nginx/nginx.conf
 VALIDATE $? "catalogue dns updated in /etc/nginx/nginx.conf"
 
 systemctl restart nginx 
