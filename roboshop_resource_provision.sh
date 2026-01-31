@@ -1,3 +1,5 @@
+#!/bin/bash
+
 #Resource provision for roboshop proj using shell
 
 if [ $# -eq 0 ]; then
