@@ -30,10 +30,11 @@ VALIDATE $? "Copying rabitmq.repo to /etc/yum.repos.d "
 
 
 
-dnf list installed rabbitmq-server
+dnf list installed rabbitmq-server &>>$LOGS_FILE
     if [ $? -ne 0 ]; then 
+       echo "Installing rabbitmq-server"
        dnf install rabbitmq-server -y &>>$LOGS_FILE
-       VALIDATE $? "Installing rabbitmq-server"
+       VALIDATE $? "rabbitmq-server installation"
     else
         echo "rabbitmq-server already installed $Y skipping $N"
     fi
