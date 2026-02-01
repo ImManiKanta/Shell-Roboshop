@@ -27,9 +27,15 @@ VALIDATE(){
 
 dnf install python3 gcc python3-devel -y
 
-useradd --system --home /app --shell /sbin/nologin --comment "roboshop system user" roboshop
+id roboshop &>>$LOGS_FILE
+if [ $? -ne 0 ]; then
+    useradd --system --home /app --shell /sbin/nologin --comment "roboshop system user" roboshop &>>$LOGS_FILE
+    VALIDATE $? "Creating system user"
+else
+    echo -e "Roboshop user already exist ... $Y SKIPPING $N"
+fi
 
-mkdir /app 
+mkdir -p /app 
 
 curl -L -o /tmp/payment.zip https://roboshop-artifacts.s3.amazonaws.com/payment-v3.zip 
 cd /app 
