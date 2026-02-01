@@ -36,7 +36,7 @@ dnf list installed rabbitmq-server &>>$LOGS_FILE
        dnf install rabbitmq-server -y &>>$LOGS_FILE
        VALIDATE $? "rabbitmq-server installation"
     else
-        echo "rabbitmq-server already installed $Y skipping $N"
+        echo -e "rabbitmq-server already installed $Y skipping $N"
     fi
 
 systemctl enable rabbitmq-server
