@@ -43,7 +43,7 @@ systemctl enable rabbitmq-server
 systemctl start rabbitmq-server
 VALIDATE $? "rabbitmq-server service enabled and started"
 
-id roboshop &>>$LOGS_FILE
+rabbitmqctl list_users | grep roboshop &>>$LOGS_FILE
 if [ $? -ne 0 ]; then
     rabbitmqctl add_user roboshop roboshop123
     rabbitmqctl set_permissions -p / roboshop ".*" ".*" ".*"
