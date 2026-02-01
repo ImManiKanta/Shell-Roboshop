@@ -24,14 +24,18 @@ VALIDATE(){
         echo -e "$2 ... $G SUCCESS $N" | tee -a $LOGS_FILE
     fi
 }
+dnf list installed mysql-server
+    if [ $? -ne 0 ]; then 
+        dnf install mysql-server -y &>>$LOGS_FILE
+        VALIDATE $? "Installing Mysql server"
+    else
+        echo "Mysql server already installed $y skipping $N"
+    fi
 
-dnf install mysql-server -y
-VALIDATE $? "Installing Mysql server"
-
-systemctl enable mysqld
+systemctl enable mysqld &>>$LOGS_FILE
 VALIDATE $? "Enabling mysqld"
 
-systemctl start mysqld  
+systemctl start mysqld  &>>$LOGS_FILE
 VALIDATE $? "Starting mysqld"
 
 mysql_secure_installation --set-root-pass RoboShop@1

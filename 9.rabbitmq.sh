@@ -10,11 +10,30 @@ Y="\e[33m"
 N="\e[0m"
 
 cp $SCRIPT_DIR/rabbitmq.repo /etc/yum.repos.d/rabbitmq.repo
+VALIDATE $? "Copying rabitmq.repo to /etc/yum.repos.d "
 
-dnf install rabbitmq-server -y
+
+
+dnf list installed rabbitmq-server
+    if [ $? -ne 0 ]; then 
+       dnf install rabbitmq-server -y &>>$LOGS_FILE
+       VALIDATE $? "Installing rabbitmq-server"
+    else
+        echo "rabbitmq-server already installed $Y skipping $N"
+    fi
 
 systemctl enable rabbitmq-server
 systemctl start rabbitmq-server
+VALIDATE $? "rabbitmq-server service enabled and started"
 
-rabbitmqctl add_user roboshop roboshop123
-rabbitmqctl set_permissions -p / roboshop ".*" ".*" ".*"
+id roboshop &>>$LOGS_FILE
+if [ $? -ne 0 ]; then
+    rabbitmqctl add_user roboshop roboshop123
+    rabbitmqctl set_permissions -p / roboshop ".*" ".*" ".*"
+    VALIDATE $? "Creating system user"
+else
+    echo -e "Roboshop user already exist ... $Y SKIPPING $N"
+fi
+
+
+

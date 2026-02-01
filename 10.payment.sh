@@ -38,12 +38,28 @@ fi
 mkdir -p /app 
 
 curl -L -o /tmp/payment.zip https://roboshop-artifacts.s3.amazonaws.com/payment-v3.zip 
+VALIDATE $? "Downloading payment  code"
+
 cd /app 
+VALIDATE $? "change dir 'cd' "
+
+rm -rf /app/*
+VALIDATE $? "Removing existing code"
+
+cd /app 
+
 unzip /tmp/payment.zip
+VALIDATE $? "unzipt the code"
+
 pip3 install -r requirements.txt
+VALIDATE $? "Installing dependencies"
 
 cp $SCRIPT_DIR/payment.service /etc/systemd/system/payment.service
+VALIDATE $? "Copying payment.service to /etc/systemd/system/"
 
 systemctl daemon-reload
+
 systemctl enable payment 
+
 systemctl start payment
+VALIDATE $? "Payment service enabled and started"
